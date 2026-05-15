@@ -1,0 +1,14 @@
+[Unit]
+Description=eGPU PCIe link initialization before NVIDIA bind
+After=bolt.service systemd-udev-settle.service basic.target
+Before=display-manager.service gdm.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/egpu-init.sh
+RemainAfterExit=yes
+TimeoutStartSec=180
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target

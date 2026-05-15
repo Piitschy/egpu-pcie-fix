@@ -1,0 +1,3 @@
+# After USB4/TB authorization, ask only the affected root port to enumerate the PCIe tunnel.
+# This is safe before the NVIDIA GPU exists; no remove and no global rescan.
+ACTION=="change", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="1", RUN+="/bin/sh -c 'sleep 2; echo 1 > /sys/devices/pci0000:00/0000:00:07.3/rescan'"

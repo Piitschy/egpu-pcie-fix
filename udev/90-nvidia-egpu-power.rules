@@ -1,0 +1,6 @@
+# Keep NVIDIA eGPU functions out of runtime D3 on Thunderbolt/USB4.
+# No retrain, no device remove, no nvidia-smi hooks.
+ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{power/control}="on"
+ACTION=="change", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{power/control}="on"
+ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{d3cold_allowed}="0"
+ACTION=="change", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{d3cold_allowed}="0"
