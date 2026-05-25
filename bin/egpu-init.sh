@@ -7,7 +7,7 @@ set -eu
 GPU_WAIT_TOTAL="90"
 GPU_WAIT_STEP="3"
 TB_ROOT="0000:00:07.3"
-TARGET_GEN="4"
+TARGET_GEN="3"
 
 log() { printf '%s\n' "$*" >&2; }
 
@@ -79,6 +79,7 @@ disable_aspm() {
   [ -n "$lc" ] || return 0
   lc_new=$(printf "%08x" $((0x$lc & 0xfffffffc)))
   setpci -s "$bdf" CAP_EXP+10.L="$lc_new" 2>/dev/null || true
+  setpci -s "$bdf" 0x50.B=0x40 2>/dev/null || true
 }
 
 retrain_link() {
@@ -146,10 +147,10 @@ sleep 2
 
 log "GPU: $GPU_BDF post-force link: $(link_speed "$GPU_BDF")"
 
-modprobe nvidia 2>/dev/null || true
-modprobe nvidia_modeset 2>/dev/null || true
-modprobe nvidia_uvm 2>/dev/null || true
-modprobe nvidia_drm 2>/dev/null || true
+modprobe -i nvidia 2>/dev/null || true
+modprobe -i nvidia_modeset 2>/dev/null || true
+modprobe -i nvidia_uvm 2>/dev/null || true
+modprobe -i nvidia_drm 2>/dev/null || true
 
 sleep 2
 log "GPU: $GPU_BDF final link: $(link_speed "$GPU_BDF")"
